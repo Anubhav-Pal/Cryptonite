@@ -1,4 +1,4 @@
-import { Navbar, HeroSection, NavbarSpace } from "@/components/index";
+import { Navbar, HeroSection, NavbarSpace, HomeCoinGraph } from "@/components/index";
 import React from "react";
 
 const HomePage = () => {
@@ -7,6 +7,7 @@ const HomePage = () => {
       <NavbarSpace />
       <Navbar />
       <HeroSection />
+      <HomeCoinGraph/>
     </div>
   );
 };

@@ -24,7 +24,7 @@
 }
 
 .purple_btn {
-  @apply rounded-lg border  border-2 border-gray-100 bg-purple-800 py-1.5 px-5 text-white transition-all hover:bg-white hover:text-purple-800 text-center text-sm flex items-center justify-center ease-in-out duration-500;
+  @apply rounded-lg bg-gradient-to-r hover:border-white duration-300 from-purple-600 to-blue-300 border border-purple-600 bg-purple-800 py-1.5 px-5 text-white transition-all text-center text-sm flex items-center justify-center ease-in-out;
 }
 
 .outline_btn {
