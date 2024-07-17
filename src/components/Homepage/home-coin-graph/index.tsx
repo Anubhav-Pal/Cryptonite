@@ -14,6 +14,7 @@ interface MarketCaps {
 }
 
 const HomeCoinGraph: React.FC = () => {
+  const apiKey = process.env.API_KEY;
   const [topCoins, setTopCoins] = useState<Coin[]>([]);
   const [marketCaps, setMarketCaps] = useState<MarketCaps[][]>([]);
 
@@ -21,7 +22,7 @@ const HomeCoinGraph: React.FC = () => {
     method: "GET",
     headers: {
       accept: "application/json",
-      "x-cg-demo-api-key": "CG-mdwtM3hntyXN9TYWex3JpJus",
+      "x-cg-demo-api-key": apiKey || "",
     },
   };
 
@@ -88,7 +89,7 @@ const HomeCoinGraph: React.FC = () => {
     },
     yaxis: {
       title: {
-        text: "Market Cap (in Billions USD)", 
+        text: "Market Cap (in Billions USD)",
       },
     },
   };
