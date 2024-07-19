@@ -1,77 +1,65 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-
-interface Coin {
-  id: string;
-  name: string;
-  symbol: string;
-}
-
-interface MarketCaps {
-  time: number;
-  value: number;
-}
+import { Coin, MarketCaps } from "./types";
+import { API_URL } from "../../../../config";
+import TrendingTable from "./TrendingCoins";
 
 const HomeCoinGraph: React.FC = () => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY || "";
+
   const [topCoins, setTopCoins] = useState<Coin[]>([]);
   const [marketCaps, setMarketCaps] = useState<MarketCaps[][]>([]);
 
-  const apiOptions = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      "x-cg-demo-api-key": apiKey || "",
-    },
-  };
-
   useEffect(() => {
-    fetch(
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=3",
-      apiOptions
-    )
+    fetch(`${API_URL}/coins/markets?vs_currency=usd&per_page=3`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "x-cg-demo-api-key": apiKey,
+      },
+    })
       .then((response) => response.json())
       .then((response) => {
         setTopCoins(response || []);
+        if (response.length > 0) {
+          getHistoricalData(response); // Pass response to getHistoricalData
+        }
       })
       .catch((err) => console.error(err));
   }, []);
 
-  console.log(marketCaps);
-
-  useEffect(() => {
-    if (topCoins.length > 0) {
-      getHistoricalData();
-    }
-  }, [topCoins]);
-
-  const getHistoricalData = () => {
-    const promises = topCoins.map((coin) =>
-      fetch(
-        `https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=2`,
-        apiOptions
-      )
+  const getHistoricalData = (coins: Coin[]) => {
+    const promises = coins.map((coin) =>
+      fetch(`${API_URL}/coins/${coin.id}/market_chart?vs_currency=usd&days=2`, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          "x-cg-demo-api-key": apiKey,
+        },
+      })
         .then((response) => response.json())
         .then((data) => data.market_caps)
     );
 
+    // console.log("Promises: ", promises);
+
     Promise.all(promises)
       .then((results) => {
+        // console.log("results: ", results);
         setMarketCaps(results);
       })
       .catch((err) => console.error("Error fetching historical data:", err));
   };
 
   const formatMarketCapsData = () => {
-    if (marketCaps.length === 0) return [];
-
+    if (marketCaps.length === 0) return { categories: [], series: [] };
     const timestamps = marketCaps[0].map((cap) => new Date(cap[0]).getHours());
     const seriesData = marketCaps.map((caps, index) => ({
       name: topCoins[index].name,
       data: caps.map((cap) => Math.round(cap[1] / 10000000000)),
     }));
-
     return { categories: timestamps, series: seriesData };
   };
 
@@ -82,30 +70,39 @@ const HomeCoinGraph: React.FC = () => {
       id: "market-cap-chart",
     },
     xaxis: {
-      categories: formattedData?.categories,
+      categories: formattedData.categories,
       title: {
         text: "Hour of the day",
       },
     },
     yaxis: {
       title: {
-        text: "Market Cap (in Billions USD)",
+        text: "Market Cap (in Billion USD)",
       },
     },
   };
 
-  const series = formattedData.series || [];
+  const series = formattedData.series;
+  // console.log("market caps: ", marketCaps);
+  // console.log("catergories: ", formattedData.categories);
+  // console.log("series: ", formattedData.series);
 
   return (
-    <div>
-      <div id="chart" className="px-20">
-        <ReactApexChart
-          options={options}
-          series={series}
-          type="line"
-          height={450}
-        />
+    <div className="flex items-start justify-between px-20">
+      <div className="w-2/3">
+        <div id="chart" className="">
+          <ReactApexChart
+            options={options}
+            series={series}
+            type="line"
+            height={450}
+          />
+        </div>
+        <div>
+          <TrendingTable />
+        </div>
       </div>
+      <div className="w-1/3">Watchlist</div>
     </div>
   );
 };
