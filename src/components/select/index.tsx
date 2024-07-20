@@ -20,7 +20,7 @@ const SelectComponent: React.FC<Props> = ({
 }) => {
   return (
     <div>
-      <Select onValueChange={(value) => onValueChange(Number(value))}>
+      <Select onValueChange={(value) => onValueChange((value))}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

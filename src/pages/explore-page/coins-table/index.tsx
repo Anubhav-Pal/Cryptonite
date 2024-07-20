@@ -23,7 +23,6 @@ export default function ExploreCoinsTable() {
       placeholder: "Select",
       func: setCoinsPerPage,
       options: [
-        { value: 10, label: 10 },
         { value: 20, label: 20 },
         { value: 50, label: 50 },
         { value: 100, label: 100 },
@@ -34,21 +33,12 @@ export default function ExploreCoinsTable() {
       placeholder: "Select",
       func: setCurrency,
       options: [
-        { value: 10, label: 10 },
-        { value: 20, label: 20 },
-        { value: 50, label: 50 },
-        { value: 100, label: 100 },
-      ],
-    },
-    {
-      label: "Page",
-      placeholder: "Select",
-      func: setPageNumber,
-      options: [
-        { value: 10, label: 10 },
-        { value: 20, label: 20 },
-        { value: 50, label: 50 },
-        { value: 100, label: 100 },
+        { value: "usd", label: "USD" },
+        { value: "inr", label: "INR" },
+        { value: "eur", label: "EUR" },
+        { value: "aud", label: "AUD" },
+        { value: "cad", label: "CAD" },
+        { value: "hkd", label: "HKD" },
       ],
     },
     {
@@ -71,6 +61,8 @@ export default function ExploreCoinsTable() {
     )
       .then((response) => response.json())
       .then((response) => {
+        console.log("response: ", response);
+
         setCoins(response);
         setLoading(false);
       })
@@ -120,7 +112,42 @@ export default function ExploreCoinsTable() {
         })}
       </div>
       <div className="">
-        {loading ? <Loader /> : <DataTable columns={columns} data={data} />}
+        {loading ? (
+          <div className="w-full h-screen flex items-center justify-center">
+            <Loader />
+          </div>
+        ) : (
+          <DataTable columns={columns} data={data} />
+        )}
+      </div>
+      <div className="flex items-center justify-between w-full text-white">
+        <div className="text-white flex items-center justify-start gap-10">
+          <button
+            className={`${
+              pageNumber === 1 ? "disabled opacity-30" : "purple_btn"
+            }`}
+            onClick={() => setPageNumber((prev) => Number(prev) - 1)}
+            disabled={pageNumber === 1 ? true : false}
+          >
+            previous
+          </button>
+          <button
+            className="purple_btn"
+            onClick={() => setPageNumber((prev) => Number(prev) + 1)}
+          >
+            next
+          </button>
+        </div>
+        <div className="flex items-center gap-2">
+          <label htmlFor="" className="text-xs font-semibold">
+            Page number:{" "}
+          </label>
+          <input
+            className="bg-transparent border-2 p-1 px-2 text"
+            type="number"
+            onChange={(e) => setPageNumber(e.target.value)}
+          />
+        </div>
       </div>
     </div>
   );
