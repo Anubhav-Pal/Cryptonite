@@ -22,8 +22,8 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="">
-      <table className="min-w-full bg-transparent rounded- overflow-auto border border-gray-700">
+    <div>
+      <table className="w-full bg-transparent rounded-lg overflow-auto border border-gray-700">
         <thead className="bg-gray-800">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -43,18 +43,26 @@ export function DataTable<TData, TValue>({
             </tr>
           ))}
         </thead>
-        <tbody className="bg-gray-900">
+        <tbody className="bg-gray-900 rounded-b-3xl">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
                 className="border-b border-gray-700 hover:bg-gray-800 transition-colors"
               >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-6 py-4 text-sm text-gray-300">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <td
+                      key={cell.id}
+                      className="px-6 py-4 text-sm text-gray-300"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             ))
           ) : (

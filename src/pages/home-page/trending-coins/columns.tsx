@@ -1,6 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 
 export type Coin = {
   coin_id: number;
@@ -38,5 +39,8 @@ export const columns: ColumnDef<Coin>[] = [
   {
     accessorKey: "sparkline",
     header: "Sparkline",
+    cell: ({ getValue }) => (
+      <Image width={30} height={20} src={getValue<string>()} alt="Sparkline" className="h-8 w-24" />
+    ),
   },
 ];

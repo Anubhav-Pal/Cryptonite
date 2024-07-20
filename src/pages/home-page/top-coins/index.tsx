@@ -4,15 +4,17 @@ import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Coin, MarketCaps } from "./types";
 import { API_URL } from "../../../../config";
-import TrendingTable from "./TrendingCoins";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const HomeCoinGraph: React.FC = () => {
+const TopCoins: React.FC = () => {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY || "";
 
   const [topCoins, setTopCoins] = useState<Coin[]>([]);
   const [marketCaps, setMarketCaps] = useState<MarketCaps[][]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setLoading(true);
     fetch(`${API_URL}/coins/markets?vs_currency=usd&per_page=3`, {
       method: "GET",
       headers: {
@@ -25,6 +27,7 @@ const HomeCoinGraph: React.FC = () => {
         setTopCoins(response || []);
         if (response.length > 0) {
           getHistoricalData(response); // Pass response to getHistoricalData
+          setLoading(false);
         }
       })
       .catch((err) => console.error(err));
@@ -89,22 +92,22 @@ const HomeCoinGraph: React.FC = () => {
 
   return (
     <div className="flex items-start justify-between px-20">
-      <div className="w-2/3">
+      <div className="w-full">
         <div id="chart" className="">
-          <ReactApexChart
-            options={options}
-            series={series}
-            type="line"
-            height={450}
-          />
-        </div>
-        <div>
-          <TrendingTable />
+          {loading ? (
+            <Skeleton className="w-full h-full rounded-full" />
+          ) : (
+            <ReactApexChart
+              options={options}
+              series={series}
+              type="line"
+              height={450}
+            />
+          )}
         </div>
       </div>
-      <div className="w-1/3">Watchlist</div>
     </div>
   );
 };
 
-export default HomeCoinGraph;
+export default TopCoins;
