@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
     },
   ];
   return (
-    <div className="w-full fixed flex bg-transparent shadow-purple-900 shadow-sm z-20 items-center justify-between px-10 p-5">
+    <div className="w-full fixed flex bg-[#0B0B15]  shadow-purple-900 shadow-sm z-20 items-center justify-between px-10 p-5">
       <div className="flex flex-row items-center justify-start gap-3">
         <Link href="/" className="text-2xl font-bold uppercase purple_gradient">
           cryptonite

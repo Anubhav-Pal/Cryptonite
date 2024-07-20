@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { columns } from "./columns";
-import { DataTable } from "./data-table";
 import { API_URL } from "../../../../config";
 import { apiKey } from "@/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataTable } from "@/components/data-table/data-table";
 
 export default function TrendingTable() {
   const [trendingCoins, setTrendingCoins] = useState([]);
