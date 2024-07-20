@@ -5,16 +5,22 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 
-interface DataTableProps<TData, TValue> {
+interface TDataWithId {
+  id: string;
+}
+
+interface DataTableProps<TData extends TDataWithId, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends TDataWithId, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter();
   const table = useReactTable({
     data,
     columns,
@@ -47,8 +53,9 @@ export function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <tr
+                onClick={() => router.push(`/explore/${row.original.id}`)}
                 key={row.id}
-                className="border-b border-gray-700 hover:bg-gray-800 transition-colors"
+                className="border-b border-gray-700 hover:bg-gray-800 transition-colors cursor-pointer"
               >
                 {row.getVisibleCells().map((cell) => {
                   return (
