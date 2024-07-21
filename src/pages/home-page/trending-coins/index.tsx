@@ -27,15 +27,12 @@ export default function TrendingTable() {
       })
       .catch((err) => console.error(err));
   }, []);
-
-  // console.log("trending coins: ", trendingCoins);
-
   const data = trendingCoins.map((coin) => {
     const { item } = coin;
     const { coin_id, name, symbol, small, market_cap_rank, data } = item;
     const { price, market_cap, total_volume, sparkline } = data;
     const coinData = {
-      coin_id,
+      id: coin_id, // Add this line
       name,
       symbol,
       small,
@@ -53,7 +50,9 @@ export default function TrendingTable() {
       {loading ? (
         <Skeleton className="w-full h-full rounded-full" />
       ) : (
-        <DataTable columns={columns} data={data} />
+        <div className="overflow-auto max-h-screen">
+          <DataTable columns={columns} data={data} />
+        </div>
       )}
     </div>
   );

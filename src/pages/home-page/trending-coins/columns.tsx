@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 
 export type Coin = {
-  coin_id: number;
+  id: number;
   name: string;
   symbol: string;
   price: number;
@@ -27,20 +27,41 @@ export const columns: ColumnDef<Coin>[] = [
   {
     accessorKey: "price",
     header: "Price",
+    cell: ({ getValue }) => (
+      <div className="text-green-500">{getValue<number>().toFixed(2)}</div>
+    ),
   },
   {
     accessorKey: "market_cap",
     header: "Market Cap",
+    cell: ({ getValue }) => (
+      <div>
+        {getValue<number>().toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+        })}
+      </div>
+    ),
   },
   {
     accessorKey: "total_volume",
     header: "Total Volume",
+    cell: ({ getValue }) => (
+      <div>{getValue<number>().toLocaleString("en-US")}</div>
+    ),
   },
   {
     accessorKey: "sparkline",
     header: "Sparkline",
     cell: ({ getValue }) => (
-      <Image width={30} height={20} src={getValue<string>()} alt="Sparkline" className="h-8 w-24" />
+      <Image
+        width={30}
+        height={20}
+        src={getValue<string>()}
+        alt="Sparkline"
+        className="h-8 w-24"
+      />
     ),
   },
 ];
+

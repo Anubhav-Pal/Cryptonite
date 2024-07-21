@@ -63,7 +63,13 @@ export default function PublicHoldingTable() {
         </div>
       </div>
 
-      {loading ? <Loader /> : <DataTable columns={columns} data={data} />}
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="overflow-auto max-h-screen">
+          <DataTable columns={columns} data={data} />
+        </div>
+      )}
     </div>
   );
 }

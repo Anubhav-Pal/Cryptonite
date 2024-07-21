@@ -8,7 +8,7 @@ const HomePage = () => {
   return (
     <div>
       <HeroSection />
-      <div className="px-20">
+      <div className="px-20 pb-20 ">
         <div className="my-40">
           <div className="text-white text-2xl font-semibold text-center capitalize">
             Current Top Coins
