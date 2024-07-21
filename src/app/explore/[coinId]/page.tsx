@@ -149,13 +149,19 @@ const CoinPage = ({
   };
 
   return (
-    <div className="px-20 flex flex-row gap-3 items-start justify-start mb-24">
-      <div className=" flex flex-col gap-10 w-2/3">
+    <div className="px-4 md:px-10 lg:px-20 flex flex-col lg:flex-row sm:gap-3 items-start justify-start mb-24">
+      <div className=" flex flex-col gap-10 w-full lg:w-2/3">
         <div className="flex flex-col items-center w-full">
-          <div className="w-full text-white flex flex-col mt-6">
-            <div className="flex items-center gap-2 mb-6">
-              <Image src={coinImage} alt="coin_image" width={60} height={60} />
-              <h1 className="text-4xl font-semibold uppercase">
+          <div className="w-full text-white flex flex-col mt-6 gap-6 sm:gap-0">
+            <div className="flex flex-col sm:flex-row items-center gap-2 mb-6">
+              <Image
+                src={coinImage}
+                className="rounded-full object-contain"
+                alt="coin_image"
+                width={60}
+                height={60}
+              />
+              <h1 className="text-2xl w-full md:w-fit sm:text-4xl font-semibold uppercase text-center sm:text-left">
                 {coinData?.name}
               </h1>
               <div className="inline-flex w-fit items-center px-3 py-1 bg-green-100 border-2 border-green-400 text-green-800 text-sm font-semibold rounded-full shadow-sm">
@@ -171,7 +177,7 @@ const CoinPage = ({
             </div>
           </div>
           <CoinGraph coinId={params.coinId} selectedOption={graphLabel} />
-          <div className="flex mt-5 font-normal text-white rounded-full bg-gray-800 gap-1 w-1/2 p-1 items-center justify-between">
+          <div className="flex mt-5 font-normal text-white rounded-full bg-gray-800 gap-1 w-full sm:w-1/2 p-1 items-center justify-between">
             <div
               onClick={() => setGraphLabel("prices")}
               className={`text-sm p-1 rounded-full w-1/2 ${
@@ -211,20 +217,20 @@ const CoinPage = ({
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="hidden sm:flex flex-col gap-2">
           <div className="text-sm font-semibold text-white">Description</div>
-          <div className="flex  w-full flex-wrap gap-1 text-gray-300 font-medium">
+          <div className="flex  w-full flex-wrap gap-1 text-gray-300 text-xs sm:text-md font-normal sm:font-medium">
             {description}
           </div>
         </div>
       </div>
 
-      <div className="mt-6 w-1/3 flex flex-col gap-10">
+      <div className="mt-6 w-full lg:w-1/3 flex flex-col gap-10">
         <div className="text-white">
           <div className="text-sm font-semibold ">Performance</div>
           <div className="my-5">
             <div className="text-2xl font-semibold mb-2">last 24 hours</div>
-            <div>
+            <div className="flex flex-row sm:flex-col items-center sm:items-start justify-between">
               <div className="text-md font-medium text-gray-300">
                 <span className="text-white">Lowest:</span>{" "}
                 {coinData?.market_data?.low_24h["usd"]} 🔴

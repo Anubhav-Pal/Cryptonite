@@ -86,12 +86,9 @@ const TopCoins: React.FC = () => {
   };
 
   const series = formattedData.series;
-  // console.log("market caps: ", marketCaps);
-  // console.log("catergories: ", formattedData.categories);
-  // console.log("series: ", formattedData.series);
 
   return (
-    <div className="flex items-start justify-between px-20 text-white">
+    <div className="flex items-start justify-between px-4 lg:px-20 text-white">
       <div className="w-full">
         <div id="chart" className="">
           {loading ? (

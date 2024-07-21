@@ -29,7 +29,7 @@ export function DataTable<TData extends TDataWithId, TValue>({
 
   return (
     <div>
-      <table className="w-full bg-transparent rounded-lg h-full border border-gray-700">
+      <table className="w-full bg-transparent overflow-auto rounded-lg h-full border border-gray-700">
         <thead className="bg-gray-800">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

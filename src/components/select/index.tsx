@@ -19,12 +19,12 @@ const SelectComponent: React.FC<Props> = ({
   options,
 }) => {
   return (
-    <div>
+    <div className="">
       <Select onValueChange={(value) => onValueChange(value)}>
-        <SelectTrigger className="w-[180px] focus:ring-0">
+        <SelectTrigger className="w-[200px] sm:w-[180px] focus:ring-0">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent className="">
+        <SelectContent className=" flex justify-end">
           {options.map((option) => (
             <SelectItem key={option.value} value={String(option.value)}>
               {option.label}

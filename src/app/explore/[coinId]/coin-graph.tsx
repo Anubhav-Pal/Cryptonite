@@ -99,7 +99,8 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
     },
     yaxis: {
       title: {
-        text: selectedOption === "prices" ? "Price (USD)" : "Value (Billions USD)",
+        text:
+          selectedOption === "prices" ? "Price (USD)" : "Value (Billions USD)",
       },
     },
   };

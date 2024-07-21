@@ -91,16 +91,16 @@ export default function ExploreCoinsTable() {
   });
 
   return (
-    <div className="overflow-auto px-20 flex flex-col gap-10 my-10">
-      <div className="text-white text-3xl font-semibold my-2 capitalize">
+    <div className="overflow-auto px-5 sm:px-20 flex flex-col gap-10 my-10">
+      <div className="text-white text-xl sm:text-3xl w-full font-semibold my-2 capitalize">
         Explore 12000+ coins on cryptonite
       </div>
-      <div className="flex items-center gap-4 w-full p-2">
+      <div className="flex sm:flex-row flex-wrap flex-col sm:items-center gap-4 w-full p-2">
         {filters.map(({ label, func, placeholder, options }, index) => {
           return (
             <div
               key={index}
-              className="flex items-center gap-2 text-sm font-medium"
+              className="flex items-center justify-between gap-2 text-sm font-medium"
             >
               <div className="text-white">{label}:</div>
               <SelectComponent
@@ -112,7 +112,7 @@ export default function ExploreCoinsTable() {
           );
         })}
       </div>
-      <div className="">
+      <div className="overflow-auto">
         {loading ? (
           <div className="w-full h-screen flex items-center justify-center">
             <Loader />
@@ -121,13 +121,13 @@ export default function ExploreCoinsTable() {
           <DataTable columns={columns} data={data} />
         )}
       </div>
-      <div className="flex items-center justify-between w-full text-white p-2">
-        <div className="text-white flex items-center justify-start gap-10">
+      <div className="flex lg:flex-row flex-col items-center gap-4 md:gap-8 lg:gap-0 justify-between w-full text-white p-2">
+        <div className="text-white flex w-full  lg:w-1/3 items-center justify-between sm:justify-start gap-10">
           <button
             className={`${
               pageNumber === 1
-                ? "disabled opacity-30 p-2 text-gray-50 rounded-lg"
-                : "purple_btn"
+                ? "disabled opacity-30 w-full lg:w-1/2 bg-gray-50 text-gray-600 p-1 rounded-lg"
+                : "purple_btn w-full lg:w-1/2"
             }`}
             onClick={() => setPageNumber((prev) => Number(prev) - 1)}
             disabled={pageNumber === 1 ? true : false}
@@ -135,18 +135,18 @@ export default function ExploreCoinsTable() {
             previous
           </button>
           <button
-            className="purple_btn"
+            className="purple_btn w-full lg:w-1/2"
             onClick={() => setPageNumber((prev) => Number(prev) + 1)}
           >
             next
           </button>
         </div>
-        <div className="flex items-center">
+        <div className="flex flex-col sm:flex-row w-full  lg:w-1/2 sm:items-center">
           <label htmlFor="" className="text-sm font-semibold flex-nowrap">
             Page number:{" "}
           </label>
           <Input
-            className="text-black"
+            className="text-black w-1/2 sm:w-full "
             type="number"
             onChange={(e) => setPageNumber(e.target.value)}
           />

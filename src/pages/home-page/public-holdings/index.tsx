@@ -43,7 +43,7 @@ export default function PublicHoldingTable() {
   return (
     <div>
       <div className="text-white font-xl font-bold my-5">
-        <div className="flex mt-5 font-normal rounded-full bg-gray-800 gap-1 w-1/2 p-1 items-center justify-between">
+        <div className="flex mt-5 font-normal rounded-full bg-gray-800 gap-1 w-full sm:w-1/2 p-1 items-center justify-between">
           <div
             onClick={() => setCurrentCoin("bitcoin")}
             className={`p-2 rounded-full w-full ${
