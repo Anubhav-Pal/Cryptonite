@@ -47,7 +47,7 @@
 
 ## Usage 
 
-To get started with Cryptonite, the hosted version of the product can be used. The website provides an overview of the application.
+To get started with Cryptonite, the hosted version of the product can be used at https://cryptonite-anubhav.vercel.app/. The website provides an overview of the application.
 
 ## Development
 
