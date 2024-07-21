@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ReactApexChart from "react-apexcharts";
+import dynamic from "next/dynamic";
 import { API_URL } from "../../../../config";
 import { Skeleton } from "@/components/ui/skeleton";
 import { apiOptions } from "@/utils";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 type Props = {
   coinId: string;
@@ -30,28 +31,30 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log("API Data:", data); // Check the structure of the API response
+
         setMarketCap(
-          data.market_caps.map(([time, value]: [string, string]) => ({
+          data.market_caps.map(([time, value]: [number, number]) => ({
             time,
-            value: parseFloat(value),
+            value: value ? parseFloat(value.toString()) : 0,
           }))
         );
         setPrices(
-          data.prices.map(([time, value]: [string, string]) => ({
+          data.prices.map(([time, value]: [number, number]) => ({
             time,
-            value: parseFloat(value),
+            value: value ? parseFloat(value.toString()) : 0,
           }))
         );
         setVolumes(
-          data.total_volumes.map(([time, value]: [string, string]) => ({
+          data.total_volumes.map(([time, value]: [number, number]) => ({
             time,
-            value: parseFloat(value),
+            value: value ? parseFloat(value.toString()) : 0,
           }))
         );
         setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
+        console.error("API Error:", err);
         setLoading(false);
       });
   }, [coinId]);
@@ -73,7 +76,9 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
     const isBillions =
       selectedOption === "market_cap" || selectedOption === "volumes";
 
-    const timestamps = selectedData.map((cap) => new Date(cap.time).getHours());
+    const timestamps = selectedData.map((cap) =>
+      new Date(cap.time).getHours().toString()
+    );
     const data = selectedData.map((cap) => {
       return isBillions
         ? Math.round(cap.value / 1_000_000_000) // Convert to billions
@@ -115,12 +120,7 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
           {loading ? (
             <Skeleton className="w-full h-full rounded-full" />
           ) : (
-            <ReactApexChart
-              options={options}
-              series={series}
-              type="line"
-              height={450}
-            />
+            <Chart options={options} series={series} type="line" height={450} />
           )}
         </div>
       </div>

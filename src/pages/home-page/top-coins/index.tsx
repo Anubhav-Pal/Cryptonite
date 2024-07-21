@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ReactApexChart from "react-apexcharts";
+import dynamic from "next/dynamic";
 import { Coin, MarketCaps } from "./types";
 import { API_URL } from "../../../../config";
 import { Skeleton } from "@/components/ui/skeleton";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 type MarketCapData = [time: number, value: number];
 
@@ -29,10 +30,10 @@ const TopCoins: React.FC = () => {
         setTopCoins(response || []);
         if (response.length > 0) {
           getHistoricalData(response); // Pass response to getHistoricalData
-          setLoading(false);
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
 
   const getHistoricalData = (coins: Coin[]) => {
@@ -56,12 +57,15 @@ const TopCoins: React.FC = () => {
   };
 
   const formatMarketCapsData = () => {
-    if (marketCaps.length === 0) return { categories: [], series: [] };
+    if (marketCaps.length === 0 || topCoins.length === 0)
+      return { categories: [], series: [] };
+
     const timestamps = marketCaps[0].map((cap) => new Date(cap[0]).getHours());
     const seriesData = marketCaps.map((caps, index) => ({
-      name: topCoins[index].name,
+      name: topCoins[index]?.name || `Coin ${index + 1}`,
       data: caps.map((cap) => Math.round(cap[1] / 10000000000)),
     }));
+
     return { categories: timestamps, series: seriesData };
   };
 
@@ -93,12 +97,7 @@ const TopCoins: React.FC = () => {
           {loading ? (
             <Skeleton className="w-full h-full rounded-full" />
           ) : (
-            <ReactApexChart
-              options={options}
-              series={series}
-              type="line"
-              height={450}
-            />
+            <Chart options={options} series={series} type="line" height={450} />
           )}
         </div>
       </div>
