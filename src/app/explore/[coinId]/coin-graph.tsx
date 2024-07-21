@@ -19,7 +19,6 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
   const [prices, setPrices] = useState<MarketCaps[]>([]);
   const [volumes, setVolumes] = useState<MarketCaps[]>([]);
   const [selectedData, setSelectedData] = useState<MarketCaps[]>([]);
-  const [option, setOption] = useState<string>(selectedOption);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -52,17 +51,17 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
       })
       .catch((err) => console.error(err));
   }, [coinId]);
-    
+
   useEffect(() => {
-    if (option === "prices") {
+    if (selectedOption === "prices") {
       setSelectedData(prices);
-    } else if (option === "market_cap") {
+    } else if (selectedOption === "market_cap") {
       setSelectedData(marketCap);
     } else {
       setSelectedData(volumes);
     }
-  }, [option, marketCap, prices, volumes]);
-    
+  }, [selectedOption, marketCap, prices, volumes]);
+
   const formatMarketCapsData = () => {
     if (selectedData.length === 0) return { categories: [], series: [] };
 
@@ -97,7 +96,7 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
   const series = formattedData.series;
 
   return (
-    <div className="flex items-start justify-between px-20">
+    <div className="flex items-start justify-between w-full">
       <div className="w-full">
         <div id="chart" className="">
           {loading ? (
