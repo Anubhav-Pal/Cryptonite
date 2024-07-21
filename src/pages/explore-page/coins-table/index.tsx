@@ -7,9 +7,10 @@ import { DataTable } from "@/components/data-table/data-table";
 import Loader from "@/components/Loader";
 import SelectComponent from "@/components/select";
 import { Input } from "@/components/ui/input";
+import { Coin } from "./columns"; // Import Coin type
 
 export default function ExploreCoinsTable() {
-  const [coins, setCoins] = useState([]);
+  const [coins, setCoins] = useState<Coin[]>([]);
   const [currency, setCurrency] = useState<number | string>("usd");
   const [coinsPerPage, setCoinsPerPage] = useState<number | string>(20);
   const [pageNumber, setPageNumber] = useState<number | string>(1);
@@ -48,16 +49,16 @@ export default function ExploreCoinsTable() {
         { value: "hkd", label: "HKD" },
       ],
     },
-    {
-      label: "Percentage Change From",
-      placeholder: "Select",
-      func: setPriceChangeTimeframe,
-      options: [
-        { value: "1h", label: "last hour" },
-        { value: "24h", label: "last day" },
-        { value: "7d", label: "last week" },
-      ],
-    },
+    // {
+    //   label: "Percentage Change From",
+    //   placeholder: "Select",
+    //   func: setPriceChangeTimeframe,
+    //   options: [
+    //     { value: "1h", label: "last hour" },
+    //     { value: "24h", label: "last day" },
+    //     { value: "7d", label: "last week" },
+    //   ],
+    // },
   ];
   useEffect(() => {
     setLoading(true);
@@ -76,7 +77,7 @@ export default function ExploreCoinsTable() {
   const data = coins.map((coin) => {
     const { id, symbol, name, image, current_price, market_cap } = coin;
 
-    const priceChangeProperty = timeframePropertyMapping[priceChangeTimeframe];
+    // const priceChangeProperty = timeframePropertyMapping[priceChangeTimeframe];
 
     const coinData = {
       id,
@@ -85,7 +86,7 @@ export default function ExploreCoinsTable() {
       image,
       current_price,
       market_cap,
-      price_change_percentage: parseFloat(coin[priceChangeProperty]).toFixed(2),
+      // price_change_percentage: coin[priceChangeProperty] || 0,
     };
     return coinData;
   });

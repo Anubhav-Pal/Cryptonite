@@ -70,10 +70,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .purple_gradient {
   @apply bg-gradient-to-r from-green-500 via-[#00b386] to-green-300 bg-clip-text text-transparent;
 }

@@ -1,13 +1,45 @@
 "use client";
 import { useEffect, useState } from "react";
-import { columns } from "./columns";
+import { ColumnDef } from "@tanstack/react-table";
 import { API_URL } from "../../../../config";
 import { apiKey } from "@/utils";
 import Loader from "@/components/Loader";
 import { DataTable } from "@/components/data-table/data-table";
 
+export type Company = {
+  name: string;
+  symbol: string;
+  total_holdings: number;
+  value: number;
+};
+
+export type CompanyWithId = Company & { id: string };
+
+export const columns: ColumnDef<CompanyWithId>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "symbol",
+    header: "Symbol",
+  },
+  {
+    accessorKey: "total_holdings",
+    header: "Net Holdings",
+  },
+  {
+    accessorKey: "value",
+    header: "Total Value",
+  },
+];
+
 export default function PublicHoldingTable() {
-  const [marketHolding, setMarketHolding] = useState([]);
+  const [marketHolding, setMarketHolding] = useState<CompanyWithId[]>([]);
   const [currentCoin, setCurrentCoin] = useState<string>("bitcoin");
   const [loading, setLoading] = useState<boolean>(true);
   const options = {
@@ -23,22 +55,19 @@ export default function PublicHoldingTable() {
     fetch(`${API_URL}/companies/public_treasury/${currentCoin}`, options)
       .then((response) => response.json())
       .then((response) => {
-        setMarketHolding(response.companies);
+        setMarketHolding(
+          response.companies.map((company: any) => ({
+            id: company.name,
+            name: company.name,
+            symbol: company.symbol,
+            total_holdings: company.total_holdings,
+            value: company.total_current_value_usd,
+          }))
+        );
         setLoading(false);
       })
       .catch((err) => console.error(err));
   }, [currentCoin]);
-
-  const data = marketHolding.map((company) => {
-    const { name, symbol, total_holdings, total_current_value_usd } = company;
-    const companyData = {
-      name,
-      symbol,
-      total_holdings,
-      value: total_current_value_usd,
-    };
-    return companyData;
-  });
 
   return (
     <div>
@@ -67,7 +96,7 @@ export default function PublicHoldingTable() {
         <Loader />
       ) : (
         <div className="overflow-auto max-h-screen">
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={columns} data={marketHolding} />
         </div>
       )}
     </div>

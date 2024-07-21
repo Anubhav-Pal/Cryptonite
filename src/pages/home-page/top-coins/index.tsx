@@ -6,11 +6,13 @@ import { Coin, MarketCaps } from "./types";
 import { API_URL } from "../../../../config";
 import { Skeleton } from "@/components/ui/skeleton";
 
+type MarketCapData = [time: number, value: number];
+
 const TopCoins: React.FC = () => {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY || "";
 
   const [topCoins, setTopCoins] = useState<Coin[]>([]);
-  const [marketCaps, setMarketCaps] = useState<MarketCaps[][]>([]);
+  const [marketCaps, setMarketCaps] = useState<MarketCapData[][]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -43,14 +45,11 @@ const TopCoins: React.FC = () => {
         },
       })
         .then((response) => response.json())
-        .then((data) => data.market_caps)
+        .then((data) => data.market_caps as MarketCapData[])
     );
-
-    // console.log("Promises: ", promises);
 
     Promise.all(promises)
       .then((results) => {
-        // console.log("results: ", results);
         setMarketCaps(results);
       })
       .catch((err) => console.error("Error fetching historical data:", err));

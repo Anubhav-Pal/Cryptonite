@@ -4,13 +4,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 
 export type Coin = {
-  id: number;
+  id: string;
   symbol: string;
   name: string;
   image: string;
   current_price: number;
   market_cap: number;
-  price_change_percentage: number;
+  // price_change_percentage: number;
 };
 
 export const columns: ColumnDef<Coin>[] = [
@@ -47,20 +47,20 @@ export const columns: ColumnDef<Coin>[] = [
       return <div className="">{formattedValue}</div>;
     },
   },
-  {
-    accessorKey: "price_change_percentage",
-    header: "% Change",
-    cell: ({ getValue }) => {
-      const value = getValue<string>();
-      return (
-        <div
-          className={`${Number(value) < 0 ? "text-red-500" : "text-green-600"}`}
-        >
-          {value}%
-        </div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "price_change_percentage",
+  //   header: "% Change",
+  //   cell: ({ getValue }) => {
+  //     const value = getValue<string>();
+  //     return (
+  //       <div
+  //         className={`${Number(value) < 0 ? "text-red-500" : "text-green-600"}`}
+  //       >
+  //         {value}%
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "image",
     header: "Logo",

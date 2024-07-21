@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 
 export type Coin = {
-  id: number;
+  id: string;
   name: string;
   symbol: string;
   price: number;
