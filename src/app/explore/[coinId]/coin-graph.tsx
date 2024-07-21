@@ -31,8 +31,6 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("API Data:", data); // Check the structure of the API response
-
         setMarketCap(
           data.market_caps.map(([time, value]: [number, number]) => ({
             time,
@@ -54,7 +52,7 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("API Error:", err);
+        console.error(err);
         setLoading(false);
       });
   }, [coinId]);

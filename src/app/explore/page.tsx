@@ -1,6 +1,6 @@
 "use client";
 
-import ExplorePage from "@/pages/explore-page/explore-page";
+import ExplorePage from "@/helpers/explore-page/explore-page";
 import React from "react";
 
 const Explore = () => {

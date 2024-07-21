@@ -1,6 +1,6 @@
 "use client";
 import { Navbar, NavbarSpace } from "@/components/index";
-import HomePage from "@/pages/home-page/home-page";
+import HomePage from "@/helpers/home-page/home-page";
 import React from "react";
 
 
