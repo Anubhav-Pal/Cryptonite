@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import heroLeft from "../../../../public/assets/images/hero-section/hero-left.png";
 import heroRight from "../../../../public/assets/images/hero-section/hero-right.png";

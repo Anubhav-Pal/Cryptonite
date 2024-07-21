@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import ExploreCoinsTable from "./coins-table";
 
