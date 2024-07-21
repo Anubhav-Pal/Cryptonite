@@ -100,7 +100,7 @@ const CoinPage = ({
   const [graphLabel, setGraphLabel] = useState<string>("market_cap");
   const [coinData, setCoinData] = useState<coinData>();
   const [graphHeader, setGraphHeader] = useState<string>("Total Market cap");
-  const [graphHeaderData, setGraphHeaderData] = useState<number>();
+  const [graphHeaderData, setGraphHeaderData] = useState<number | undefined>();
   const [prices, setPrices] = useState<number>();
   const [volume, setVolume] = useState<number>();
   const [marketCap, setMarketCap] = useState<number>();
@@ -117,39 +117,36 @@ const CoinPage = ({
   }, [params.coinId]);
 
   useEffect(() => {
-    if (graphLabel === "market_cap") {
-      setGraphHeader("current market cap");
-      setGraphHeaderData(marketCap);
-    } else if (graphLabel === "prices") {
-      setGraphHeader("Current price");
-      setGraphHeaderData(prices);
-    } else {
-      setGraphHeader("Current volume");
-      setGraphHeaderData(volume);
+    if (coinData) {
+      setPrices(coinData.market_data.current_price.usd);
+      setVolume(coinData.market_data.total_volume.usd);
+      setMarketCap(coinData.market_data.market_cap.usd);
+      setCategories(coinData.categories);
+      setcoinImage(coinData.image["large"] || "");
+      setDescription(coinData.description["en"] || "");
+      setLastUpdated(formatDate(coinData.market_data.last_updated));
+
+      // Set graphHeaderData based on the current graphLabel
+      if (graphLabel === "market_cap") {
+        setGraphHeader("Current Market Cap");
+        setGraphHeaderData(coinData.market_data.market_cap.usd);
+      } else if (graphLabel === "prices") {
+        setGraphHeader("Current Price");
+        setGraphHeaderData(coinData.market_data.current_price.usd);
+      } else if (graphLabel === "volumes") {
+        setGraphHeader("Current Volume");
+        setGraphHeaderData(coinData.market_data.total_volume.usd);
+      }
     }
-  }, [graphLabel]);
+  }, [coinData, graphLabel]);
 
-  useEffect(() => {
-    setPrices(coinData?.market_data.current_price.usd);
-    setVolume(coinData?.market_data.total_volume.usd);
-    setMarketCap(coinData?.market_data.market_cap.usd);
-    setCategories(coinData?.categories);
-    setcoinImage(coinData?.image["large"] || "");
-    setDescription(coinData?.description["en"] || "");
-    const formatDate = (dateString: Date) => {
-      const date = new Date(dateString);
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0"); // getMonth() is zero-based
-      const year = String(date.getFullYear()).slice(-2); // get the last two digits of the year
-
-      return `${day}/${month}/${year}`;
-    };
-
-    const lastUpdated = coinData?.market_data?.last_updated
-      ? formatDate(coinData.market_data.last_updated)
-      : null;
-    setLastUpdated(lastUpdated || undefined);
-  }, [coinData]);
+  const formatDate = (dateString: Date) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // getMonth() is zero-based
+    const year = String(date.getFullYear()).slice(-2); // get the last two digits of the year
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <div className="px-20 flex flex-row gap-3 items-start justify-start mb-24">
@@ -257,7 +254,8 @@ const CoinPage = ({
             <div className="border-b-2 border-white flex items-end justify-between border-opacity-40 p-1 pt-2">
               <div className="capitalize text-sm">max supply</div>
               <div className="font-semibold text-lg">
-                {coinData?.market_data.max_supply || coinData?.market_data.total_supply}
+                {coinData?.market_data.max_supply ||
+                  coinData?.market_data.total_supply}
               </div>
             </div>
             <div className="border-b-2 border-white flex items-end justify-between border-opacity-40 p-1 pt-2">

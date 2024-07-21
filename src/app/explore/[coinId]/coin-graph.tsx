@@ -29,27 +29,30 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        // console.log("data", data);
-
         setMarketCap(
-          data.market_caps.map(
-            ([time, value]: [time: string, value: string]) => ({ time, value })
-          )
+          data.market_caps.map(([time, value]: [string, string]) => ({
+            time,
+            value: parseFloat(value),
+          }))
         );
         setPrices(
-          data.prices.map(([time, value]: [time: string, value: string]) => ({
+          data.prices.map(([time, value]: [string, string]) => ({
             time,
-            value,
+            value: parseFloat(value),
           }))
         );
         setVolumes(
-          data.total_volumes.map(
-            ([time, value]: [time: string, value: string]) => ({ time, value })
-          )
+          data.total_volumes.map(([time, value]: [string, string]) => ({
+            time,
+            value: parseFloat(value),
+          }))
         );
         setLoading(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, [coinId]);
 
   useEffect(() => {
@@ -65,12 +68,20 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
   const formatMarketCapsData = () => {
     if (selectedData.length === 0) return { categories: [], series: [] };
 
+    // Determine if data should be in billions (marketCap, volumes) or dollars (prices)
+    const isBillions =
+      selectedOption === "market_cap" || selectedOption === "volumes";
+
     const timestamps = selectedData.map((cap) => new Date(cap.time).getHours());
-    const Data = selectedData.map((cap) => Math.round(cap.value / 1000000000)); // Convert to billions
+    const data = selectedData.map((cap) => {
+      return isBillions
+        ? Math.round(cap.value / 1_000_000_000) // Convert to billions
+        : Math.round(cap.value); // Keep in dollars for prices
+    });
 
     return {
       categories: timestamps,
-      series: [{ name: "Market Cap", data: Data }],
+      series: [{ name: selectedOption === "prices" ? "Price" : "Value", data }],
     };
   };
 
@@ -78,17 +89,17 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
 
   const options = {
     chart: {
-      id: "market-cap-chart",
+      id: "data-chart",
     },
     xaxis: {
       categories: formattedData.categories,
       title: {
-        text: "Hour of the day",
+        text: "Hour of the Day",
       },
     },
     yaxis: {
       title: {
-        // text: "Market Cap (in Billion USD)",
+        text: selectedOption === "prices" ? "Price (USD)" : "Value (Billions USD)",
       },
     },
   };

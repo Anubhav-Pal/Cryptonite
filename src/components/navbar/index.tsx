@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
       .catch((err) => console.error(err));
   }, [query]);
 
-  const handleQueryInputChange = (e) => {
+  const handleQueryInputChange = (e: any) => {
     setOpenPopup(true);
     const { value } = e.target;
     setQuery(value);
@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
     },
   ];
   return (
-    <div className="w-full fixed flex bg-[#0B0B15]  shadow-purple-900 shadow-sm z-20 items-center justify-between px-20 p-5">
+    <div className="w-full fixed flex bg-[#0B0B15]  shadow-[#00b386] shadow-sm z-20 items-center justify-between px-20 p-5">
       <div className="flex flex-row items-center justify-start gap-3">
         <Link href="/" className="text-2xl font-bold uppercase purple_gradient">
           cryptonite
@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center justify-between gap-5 ">
         {navItems.map((navItem) => (
           <Link href={navItem.route} className="" key={navItem.key}>
-            <div className="text-white font opacity-70 hover:opacity-90 transition-all cursor-pointer">
+            <div className="text-white opacity-90 transition-all cursor-pointer">
               {navItem.label}
             </div>
           </Link>
@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
           <input
             value={query}
             onChange={handleQueryInputChange}
-            className="rounded-l-md font-normal placeholder:text-black outline-none bg-purple-50 p-2 pl-4 text-sm focus:ring-4 focus:ring-purple-300"
+            className="rounded-l-md font-normal placeholder:text-black outline-none bg-purple-50 p-2 pl-4 text-sm focus:ring-4 focus:ring-[#00b386]"
             type="text"
             placeholder="Search..."
           />

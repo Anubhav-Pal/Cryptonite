@@ -18,6 +18,12 @@ export default function ExploreCoinsTable() {
   >("1h");
   const [loading, setLoading] = useState<boolean>(true);
 
+  const timeframePropertyMapping: { [key: string]: string } = {
+    "1h": "price_change_percentage_1h_in_currency",
+    "24h": "price_change_percentage_24h_in_currency",
+    "7d": "price_change_percentage_7d_in_currency",
+  };
+
   const filters = [
     {
       label: "Coins Per Page",
@@ -43,43 +49,35 @@ export default function ExploreCoinsTable() {
       ],
     },
     {
-      label: "Time frame",
+      label: "Percentage Change From",
       placeholder: "Select",
       func: setPriceChangeTimeframe,
       options: [
-        { value: 10, label: 10 },
-        { value: 20, label: 20 },
-        { value: 50, label: 50 },
-        { value: 100, label: 100 },
+        { value: "1h", label: "last hour" },
+        { value: "24h", label: "last day" },
+        { value: "7d", label: "last week" },
       ],
     },
   ];
   useEffect(() => {
     setLoading(true);
     fetch(
-      `${API_URL}/coins/markets?vs_currency=${currency}&per_page=${coinsPerPage}&page=${pageNumber}&sparkline=false&price_change_percentage=1h%2C24h%2C7d&precision=2`,
+      `${API_URL}/coins/markets?vs_currency=${currency}&per_page=${coinsPerPage}&page=${pageNumber}&sparkline=false&price_change_percentage=${priceChangeTimeframe}&precision=2`,
       apiOptions
     )
       .then((response) => response.json())
       .then((response) => {
-        console.log("response: ", response);
-
         setCoins(response);
         setLoading(false);
       })
       .catch((err) => console.error(err));
-  }, [currency, coinsPerPage, pageNumber]);
+  }, [currency, coinsPerPage, pageNumber, priceChangeTimeframe]);
 
   const data = coins.map((coin) => {
-    const {
-      id,
-      symbol,
-      name,
-      image,
-      current_price,
-      market_cap,
-      price_change_percentage_24h,
-    } = coin;
+    const { id, symbol, name, image, current_price, market_cap } = coin;
+
+    const priceChangeProperty = timeframePropertyMapping[priceChangeTimeframe];
+
     const coinData = {
       id,
       symbol,
@@ -87,14 +85,16 @@ export default function ExploreCoinsTable() {
       image,
       current_price,
       market_cap,
-      price_change_percentage_24h,
+      price_change_percentage: parseFloat(coin[priceChangeProperty]).toFixed(2),
     };
     return coinData;
   });
 
   return (
     <div className="overflow-auto px-20 flex flex-col gap-10 my-10">
-      {/* <div className="text-white font-xl font-bold my-5">Coins</div> */}
+      <div className="text-white text-3xl font-semibold my-2 capitalize">
+        Explore 12000+ coins on cryptonite
+      </div>
       <div className="flex items-center gap-4 w-full p-2">
         {filters.map(({ label, func, placeholder, options }, index) => {
           return (
@@ -125,7 +125,9 @@ export default function ExploreCoinsTable() {
         <div className="text-white flex items-center justify-start gap-10">
           <button
             className={`${
-              pageNumber === 1 ? "disabled opacity-30" : "purple_btn"
+              pageNumber === 1
+                ? "disabled opacity-30 p-2 text-gray-50 rounded-lg"
+                : "purple_btn"
             }`}
             onClick={() => setPageNumber((prev) => Number(prev) - 1)}
             disabled={pageNumber === 1 ? true : false}
@@ -140,7 +142,7 @@ export default function ExploreCoinsTable() {
           </button>
         </div>
         <div className="flex items-center">
-          <label htmlFor="" className="text-xs font-semibold flex-nowrap">
+          <label htmlFor="" className="text-sm font-semibold flex-nowrap">
             Page number:{" "}
           </label>
           <Input

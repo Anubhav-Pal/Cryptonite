@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+
 const HeroSection = () => {
   return (
     <div className="text-white h-[90vh] w-full flex items-center justify-between">

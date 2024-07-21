@@ -50,9 +50,6 @@ export default function TrendingTable() {
 
   return (
     <div className="overflow-auto">
-      <div className="text-white font-xl font-bold my-5">
-        Trending In Market
-      </div>
       {loading ? (
         <Skeleton className="w-full h-full rounded-full" />
       ) : (

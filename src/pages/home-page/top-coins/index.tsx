@@ -91,7 +91,7 @@ const TopCoins: React.FC = () => {
   // console.log("series: ", formattedData.series);
 
   return (
-    <div className="flex items-start justify-between px-20">
+    <div className="flex items-start justify-between px-20 text-white">
       <div className="w-full">
         <div id="chart" className="">
           {loading ? (
