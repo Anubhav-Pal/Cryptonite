@@ -6,6 +6,7 @@ import { apiKey, apiOptions } from "@/utils";
 import { DataTable } from "@/components/data-table/data-table";
 import Loader from "@/components/Loader";
 import SelectComponent from "@/components/select";
+import { Input } from "@/components/ui/input";
 
 export default function ExploreCoinsTable() {
   const [coins, setCoins] = useState([]);
@@ -94,14 +95,14 @@ export default function ExploreCoinsTable() {
   return (
     <div className="overflow-auto px-20 flex flex-col gap-10 my-10">
       {/* <div className="text-white font-xl font-bold my-5">Coins</div> */}
-      <div className="text-white flex items-center gap-4 w-full">
+      <div className="flex items-center gap-4 w-full p-2">
         {filters.map(({ label, func, placeholder, options }, index) => {
           return (
             <div
               key={index}
               className="flex items-center gap-2 text-sm font-medium"
             >
-              <div>{label}:</div>
+              <div className="text-white">{label}:</div>
               <SelectComponent
                 placeholder={placeholder}
                 onValueChange={func}
@@ -120,7 +121,7 @@ export default function ExploreCoinsTable() {
           <DataTable columns={columns} data={data} />
         )}
       </div>
-      <div className="flex items-center justify-between w-full text-white">
+      <div className="flex items-center justify-between w-full text-white p-2">
         <div className="text-white flex items-center justify-start gap-10">
           <button
             className={`${
@@ -138,12 +139,12 @@ export default function ExploreCoinsTable() {
             next
           </button>
         </div>
-        <div className="flex items-center gap-2">
-          <label htmlFor="" className="text-xs font-semibold">
+        <div className="flex items-center">
+          <label htmlFor="" className="text-xs font-semibold flex-nowrap">
             Page number:{" "}
           </label>
-          <input
-            className="bg-transparent border-2 p-1 px-2 text"
+          <Input
+            className="text-black"
             type="number"
             onChange={(e) => setPageNumber(e.target.value)}
           />

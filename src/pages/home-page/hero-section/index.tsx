@@ -3,6 +3,7 @@ import heroLeft from "../../../../public/assets/images/hero-section/hero-left.pn
 import heroRight from "../../../../public/assets/images/hero-section/hero-right.png";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
   return (
@@ -32,7 +33,7 @@ const HeroSection = () => {
           href="/explore"
           className="w-full flex items-center justify-center mt-4"
         >
-          <button className="purple_btn font-bold  w-1/4 ">Explore</button>
+          <Button className="purple_btn font-bold  w-1/4 ">Explore</Button>
         </Link>
       </div>
       <div className="h-full flex items-start">

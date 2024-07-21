@@ -257,7 +257,7 @@ const CoinPage = ({
             <div className="border-b-2 border-white flex items-end justify-between border-opacity-40 p-1 pt-2">
               <div className="capitalize text-sm">max supply</div>
               <div className="font-semibold text-lg">
-                {coinData?.market_data.max_supply}
+                {coinData?.market_data.max_supply || coinData?.market_data.total_supply}
               </div>
             </div>
             <div className="border-b-2 border-white flex items-end justify-between border-opacity-40 p-1 pt-2">
