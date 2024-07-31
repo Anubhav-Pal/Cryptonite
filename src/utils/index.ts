@@ -4,5 +4,6 @@ export const apiOptions = {
   headers: {
     accept: "application/json",
     "x-cg-demo-api-key": apiKey,
+    mode: "no-cors",
   },
 };

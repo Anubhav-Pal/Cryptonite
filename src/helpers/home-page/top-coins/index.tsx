@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Coin, MarketCaps } from "./types";
 import { API_URL } from "../../../../config";
 import { Skeleton } from "@/components/ui/skeleton";
+import { apiOptions } from "@/utils";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 type MarketCapData = [time: number, value: number];
@@ -18,13 +19,7 @@ const TopCoins: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${API_URL}/coins/markets?vs_currency=usd&per_page=3`, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-cg-demo-api-key": apiKey,
-      },
-    })
+    fetch(`${API_URL}/coins/markets?vs_currency=usd&per_page=3`, apiOptions)
       .then((response) => response.json())
       .then((response) => {
         setTopCoins(response || []);
@@ -38,13 +33,10 @@ const TopCoins: React.FC = () => {
 
   const getHistoricalData = (coins: Coin[]) => {
     const promises = coins.map((coin) =>
-      fetch(`${API_URL}/coins/${coin.id}/market_chart?vs_currency=usd&days=2`, {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          "x-cg-demo-api-key": apiKey,
-        },
-      })
+      fetch(
+        `${API_URL}/coins/${coin.id}/market_chart?vs_currency=usd&days=2`,
+        apiOptions
+      )
         .then((response) => response.json())
         .then((data) => data.market_caps as MarketCapData[])
     );

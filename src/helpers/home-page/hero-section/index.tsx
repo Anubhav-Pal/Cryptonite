@@ -20,7 +20,7 @@ const HeroSection = () => {
       </div>
       <div className="flex flex-col items-center text-center w-full px-6 sm:px-0 lg:w-3/5">
         <div className="text-xs sm:text-sm font-medium sm:mt-0 mt-10 w-full">
-          Whether you’re a hodler or a trader, Cryptonite has got what you need.
+          Whether you’re a holder or a trader, Cryptonite has got what you need.
         </div>
         <div className=" mt-5 sm:text-5xl font-extrabold leading-[1.15] text-white text-4xl">
           The <span className="purple_gradient">best crypto tracker </span>

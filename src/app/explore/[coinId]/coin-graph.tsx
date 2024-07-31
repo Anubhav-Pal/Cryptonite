@@ -11,16 +11,17 @@ type Props = {
   selectedOption: string;
 };
 
-interface MarketCaps {
+interface coinTimeData {
   time: number;
   value: number;
 }
+type coinDataArrayType = coinTimeData[];
 
 const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
-  const [marketCap, setMarketCap] = useState<MarketCaps[]>([]);
-  const [prices, setPrices] = useState<MarketCaps[]>([]);
-  const [volumes, setVolumes] = useState<MarketCaps[]>([]);
-  const [selectedData, setSelectedData] = useState<MarketCaps[]>([]);
+  const [marketCap, setMarketCap] = useState<coinDataArrayType>([]);
+  const [prices, setPrices] = useState<coinDataArrayType>([]);
+  const [volumes, setVolumes] = useState<coinDataArrayType>([]);
+  const [selectedData, setSelectedData] = useState<coinDataArrayType>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -31,25 +32,27 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        setMarketCap(
-          data.market_caps.map(([time, value]: [number, number]) => ({
-            time,
-            value: value ? parseFloat(value.toString()) : 0,
-          }))
-        );
-        setPrices(
-          data.prices.map(([time, value]: [number, number]) => ({
-            time,
-            value: value ? parseFloat(value.toString()) : 0,
-          }))
-        );
-        setVolumes(
-          data.total_volumes.map(([time, value]: [number, number]) => ({
-            time,
-            value: value ? parseFloat(value.toString()) : 0,
-          }))
-        );
-        setLoading(false);
+        if (data) {
+          setMarketCap(
+            data.market_caps.map(([time, value]: [number, number]) => ({
+              time,
+              value,
+            }))
+          );
+          setPrices(
+            data.prices.map(([time, value]: [number, number]) => ({
+              time,
+              value,
+            }))
+          );
+          setVolumes(
+            data.total_volumes.map(([time, value]: [number, number]) => ({
+              time,
+              value,
+            }))
+          );
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -62,7 +65,7 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
       setSelectedData(prices);
     } else if (selectedOption === "market_cap") {
       setSelectedData(marketCap);
-    } else {
+    } else if (selectedOption === "total_volumes") {
       setSelectedData(volumes);
     }
   }, [selectedOption, marketCap, prices, volumes]);
@@ -74,9 +77,7 @@ const CoinGraph: React.FC<Props> = ({ coinId, selectedOption }) => {
     const isBillions =
       selectedOption === "market_cap" || selectedOption === "volumes";
 
-    const timestamps = selectedData.map((cap) =>
-      new Date(cap.time).getHours().toString()
-    );
+    const timestamps = selectedData.map((cap) => new Date(cap.time).getHours());
     const data = selectedData.map((cap) => {
       return isBillions
         ? Math.round(cap.value / 1_000_000_000) // Convert to billions
